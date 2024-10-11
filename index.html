@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+     <meta property="og:image" content="https://raw.githubusercontent.com/Tria6460/Tria6460.github.io/main/images__1_-removebg-preview.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinjaman-Express-Tunaiku</title>
+    <style>
+        /* Popup pertama */
+        #popup1 {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 10px;
+            z-index: 1000;
+            display: none;
+        }
+
+        #popup1 img {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+        }
+
+        /* Popup kedua */
+        #popup2 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            display: none;
+            overflow: hidden;
+        }
+
+        #popup2 img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Popup pertama -->
+    <div id="popup1">
+        <img src="https://raw.githubusercontent.com/Tria6460/Tria6460.github.io/main/images%20(1).jpeg" alt="Popup Image 1">
+    </div>
+
+    <!-- Popup kedua -->
+    <div id="popup2">
+        <img src="https://raw.githubusercontent.com/Tria6460/Tria6460.github.io/main/IMG-20240813-WA0017.jpg" alt="Popup Image 2">
+    </div>
+
+    <script>
+        window.onload = function() {
+            // Tampilkan popup pertama
+            var popup1 = document.getElementById('popup1');
+            var popup2 = document.getElementById('popup2');
+
+            popup1.style.display = 'block';
+
+            // Setelah 2 detik, sembunyikan popup pertama dan tampilkan popup kedua
+            setTimeout(function() {
+                popup1.style.display = 'none';
+                popup2.style.display = 'block';
+                
+                // Setelah 3 detik, sembunyikan popup kedua dan arahkan ke halaman baru
+                setTimeout(function() {
+                    popup2.style.display = 'none';
+                    window.location.href = 'patok.html';
+                }, 3000);
+            }, 2000);
+        };
+    </script>
+</body>
+</html>

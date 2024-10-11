@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TunaiKu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffffff;
+        }
+
+        /* Slider Styles */
+        .slider {
+            width: 100%;
+            margin-top: -40%;
+            max-width: 350px;
+            overflow: hidden;
+            border-radius: 5px;
+            margin-bottom: 20px; /* Margin untuk memisahkan slider dari konten berikutnya */
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 500%;
+        }
+
+        .slides img {
+            width: 20%;
+            border-radius: 10px;
+        }
+
+        /* Navbar Styles */
+        nav {
+            position: fixed;
+            width: 100%;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .nav-top {
+            top: 0;
+        }
+
+        .nav-bottom {
+            bottom: 70px; /* Atur jarak dari bawah */
+        }
+
+        .nav-content {
+            background-color: transparent;
+            height: auto;
+        }
+
+        .nav-content img {
+            width: 100%;
+            height: auto;
+        }
+
+        .nav1, .nav2 {
+            height: 50px; /* Adjust this value based on the actual height needed */
+        }
+        
+        .nav2 {
+            z-index: 99999;
+            position: fixed;
+            background: url("https://raw.githubusercontent.com/Tria6460/Tria6460.github.io/main/1723556306000.jpg") transparent;
+            background-repeat: no-repeat;
+            background-size: 100%;
+            height: 65px;
+            width: 100%;
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            margin: 0px auto;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            margin-top: 10px; /* Distance from the slider */
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 320px; /* Same as slider width */
+        }
+
+        .nav-buttons button {
+            padding: 16px 40px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            background-color: #007bff; /* Button color */
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .nav-buttons button:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="nav-top">
+        <div class="nav-content nav1">
+            <img src="https://raw.githubusercontent.com/Tria6460/Tria6460.github.io/main/1723556014781.jpg" alt="Nav Top">
+        </div>
+    </nav>
+
+    <div class="slider">
+        <div class="slides">
+            <img src="https://raw.githubusercontent.com/Tria6460/Tria6460.github.io/main/IMG-20240813-WA0012.jpg" alt="Slide 1">
+            <img src="https://raw.githubusercontent.com/Tria6460/Tria6460.github.io/main/IMG-20240813-WA0011.jpg" alt="Slide 2">
+            <img src="https://raw.githubusercontent.com/Tria6460/Tria6460.github.io/main/IMG-20240813-WA0013.jpg" alt="Slide 3">
+            <img src="https://raw.githubusercontent.com/Tria6460/Tria6460.github.io/main/IMG-20240813-WA0014.jpg" alt="Slide 4">
+            <img src="https://raw.githubusercontent.com/Tria6460/Tria6460.github.io/main/IMG-20240813-WA0015.jpg" alt="Slide 5">
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button onclick="window.location.href='pati.html';">Masuk</button>
+        <button onclick="window.location.href='pati.html';">Pinjam</button>
+    </div>
+
+    <div class="nav2"></div>
+
+    <script>
+        let slideIndex = 0;
+
+        function showSlides() {
+            const slides = document.querySelector('.slides');
+            const totalSlides = slides.children.length;
+
+            slideIndex++;
+            if (slideIndex >= totalSlides) {
+                slideIndex = 0;
+            }
+
+            const offset = -slideIndex * 100 / totalSlides;
+            slides.style.transform = `translateX(${offset}%)`;
+        }
+
+        // Initialize the slider
+        setInterval(showSlides, 3000); // Change slide every 3 seconds
+
+    </script>
+</body>
+</html>
